@@ -10,7 +10,9 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
@@ -29,7 +31,11 @@ public class DotaTiController {
     }
 
     @GET
-    public Uni<List<Tournament>> list() {
-        return tournamentsService.list();
+    public Uni<List<Tournament>> listTiOccurencees() {
+        return tournamentsService.list()
+                .map(x -> x.stream()
+                        .filter(Tournament::isTheInternational)
+                        .sorted(Comparator.reverseOrder())
+                        .collect(Collectors.toList()));
     }
 }
