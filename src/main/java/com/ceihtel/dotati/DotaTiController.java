@@ -3,6 +3,7 @@ package com.ceihtel.dotati;
 import com.ceihtel.dotati.dtos.Tournament;
 import com.ceihtel.dotati.opendota.TournamentsService;
 import io.smallrye.mutiny.Uni;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -24,10 +25,13 @@ public class DotaTiController {
     @RestClient
     TournamentsService tournamentsService;
 
+    @ConfigProperty(name = "health.message")
+    public String healthMessage;
+
     @GET
     @Path("/health")
     public Uni<String> health() {
-        return Uni.createFrom().item("Service UP !");
+        return Uni.createFrom().item(healthMessage);
     }
 
     @GET
